@@ -1,5 +1,9 @@
 package com.grid.financial;
 
+import com.grid.financial.ReportTemplate.PrintedReport;
+import com.grid.financial.ReportTemplate.ReportGenerator;
+import com.grid.financial.ReportTemplate.WebReport;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,6 +22,7 @@ public class Client {
         InputStream inputStream = Client.class.getClassLoader().getResourceAsStream(CSV_FILENAME);
         InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader reader = new BufferedReader(streamReader);
+        //Less work to the client
 
         for (String rawLine; (rawLine = reader.readLine()) != null;) {
             List<String> line = CSVUtils.parseLine(rawLine);
@@ -27,9 +32,11 @@ public class Client {
             }
         }
 
-        WebReport webReport = new WebReport();
-        String htmlReport = webReport.createContent(result);
-        // System.out.println(htmlReport);
-        webReport.createFile(htmlReport);
+//        WebReport webReport = new WebReport();
+        ReportGenerator report = new PrintedReport(result);
+        report.generateReport();
+        report= new WebReport(result);
+        report.generateReport(); //Factory method
+        StringBuilder uwu = new StringBuilder();
     }
 }

@@ -30,7 +30,6 @@ public class RidesParser {
               .build();
     } catch (Exception e) {
       System.out.println(e.toString());
-      System.out.println("Impossible to parse");
     }
 
     return newRide;

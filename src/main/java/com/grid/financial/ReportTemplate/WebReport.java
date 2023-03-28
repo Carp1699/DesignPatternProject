@@ -1,15 +1,33 @@
-package com.grid.financial;
+package com.grid.financial.ReportTemplate;
+
+import com.grid.financial.ReportTemplate.ReportGenerator;
+import com.grid.financial.Ride;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
-public class WebReport {
+public class WebReport extends ReportGenerator {
+    public WebReport(List<Ride> rides)  {
+        this.rides = rides;
+    }
 
+    @Override
+    public String createHeader(String title) {
+        return "<h1>" + title + "</h1>";
+    }
+
+    @Override
+    public FileWriter createFile() throws IOException {
+        FileWriter fileWriter = new FileWriter("financial-report.html");
+        this.fileWriter = fileWriter;
+        return fileWriter;
+    }
+
+    @Override
     public String createContent(List<Ride> rides) {
         StringBuilder builder = new StringBuilder();
-        builder.append(createHeaders("Taxi Report"));
+        builder.append(createHeader("Taxi Report"));
         builder.append(createTableHeaders());
         rides.forEach( ride -> {
             builder.append(addRide(ride));
@@ -17,30 +35,20 @@ public class WebReport {
         });
         builder.append("<br>");
         builder.append(closeTableHeaders());
-
+        this.content = builder.toString();
         return builder.toString();
     }
 
-    public void createFile(String content) throws IOException {
-        FileWriter fileWriter = new FileWriter("financial-report.html");
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-        printWriter.print(content);
-        printWriter.close();
-    }
 
-    private String createHeaders(String title){
-        return "<h1>" + title + "</h1>";
-    }
-
-    private String createTableHeaders() {
+    public String createTableHeaders() {
         return "<table>" +
                 "<tr>" +
-                    "<th> TaxiID </th>" +
-                    "<th> Pickup time </th>" +
-                    "<th> Dropoff time </th>" +
-                    "<th> Passenger count </th>" +
-                    "<th> Trip Distance </th>" +
-                    "<th> Total amount </th>" +
+                "<th> TaxiID </th>" +
+                "<th> Pickup time </th>" +
+                "<th> Dropoff time </th>" +
+                "<th> Passenger count </th>" +
+                "<th> Trip Distance </th>" +
+                "<th> Total amount </th>" +
                 "</tr> <br>";
     }
 
@@ -48,7 +56,7 @@ public class WebReport {
         return "</table>";
     }
 
-    private String addRide(Ride ride) {
+    public String addRide(Ride ride) {
         return  "<tr style=\"height:30px\">" +
                 "<td>" + ride.getTaxiId() + "</td>" +
                 "<td>" + ride.getPickUpTime() + "</td>" +

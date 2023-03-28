@@ -17,7 +17,7 @@ public class Ride {
     this.error = error;
   }
 
-   Ride(
+  public Ride(
       long taxiId,
       Date pickUpTime,
       Date dropOffTime,
