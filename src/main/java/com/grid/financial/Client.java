@@ -1,8 +1,7 @@
 package com.grid.financial;
 
-import com.grid.financial.ReportTemplate.PrintedReport;
+import com.grid.financial.Factory.ReportFactory;
 import com.grid.financial.ReportTemplate.ReportGenerator;
-import com.grid.financial.ReportTemplate.WebReport;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -23,7 +22,6 @@ public class Client {
         InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader reader = new BufferedReader(streamReader);
         //Less work to the client
-
         for (String rawLine; (rawLine = reader.readLine()) != null;) {
             List<String> line = CSVUtils.parseLine(rawLine);
             Ride newRide = RidesParser.parseFromList(line);
@@ -32,11 +30,17 @@ public class Client {
             }
         }
 
-//        WebReport webReport = new WebReport();
-        ReportGenerator report = new PrintedReport(result);
+
+//        ReportGenerator report = new PrintedReport(result);
+//        report.generateReport();
+//        report= new WebReport(result);
+//        report.generateReport();
+        //Factory method --- The current docTypes allowed are "Printed and "Web" (txt and html extension)
+        ReportFactory reportFactory = new ReportFactory();
+        ReportGenerator report = reportFactory.createReport("Printed",result);
+        ReportGenerator report2 = reportFactory.createReport("Web",result);
+        report2.generateReport();
         report.generateReport();
-        report= new WebReport(result);
-        report.generateReport(); //Factory method
-        StringBuilder uwu = new StringBuilder();
+
     }
 }

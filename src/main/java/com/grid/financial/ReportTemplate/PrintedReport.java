@@ -48,13 +48,13 @@ public class PrintedReport extends ReportGenerator {
                 "\t \t " + ride.getPickUpTime() + "\t \t" +
                 " " + ride.getDropOffTime() + " " +
                 " \t\t" + ride.getPassengerCount() + " \t\t" +
-                "\t\t\t " + ride.getTripDistance() + " " +
+                "\t\t\t " + ride.getTripDistance()  +
                 " \t\t\t\t\t" + formatAmount(ride.getTollsAmount()) + " " +
-                "\n " ;
+                "\n \n " ;
     }
     private String formatAmount(double amount) {
         if(amount < 0) {
-            return "   " + amount + "  ";
+            return "(" + amount + ")";
         }
         return Double.toString(amount);
     }
